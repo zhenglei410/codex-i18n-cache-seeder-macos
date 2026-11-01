@@ -13,6 +13,15 @@ curl -fsSL https://raw.githubusercontent.com/zhenglei410/codex-i18n-cache-seeder
 python3 /tmp/codex_i18n_macos.py
 ```
 
+也可以从 Gitee 下载：
+
+```bash
+curl -fsSL https://gitee.com/zhenglei410/codex-i18n-cache-seeder-macos/raw/main/codex_i18n_macos.py -o /tmp/codex_i18n_macos.py
+python3 /tmp/codex_i18n_macos.py
+```
+
+项目以 GitHub 为主要提交位置，Gitee 为同步镜像。
+
 建议先检查下载的脚本；固定版本时请把 `main` 替换为经核对的提交哈希。执行后完全退出 Codex，再正常启动。语言未自动变为中文时检查系统语言和 Codex 中的语言设置。
 
 如果报告未找到缓存或目标 Layer，可以选择创建最小缓存：
