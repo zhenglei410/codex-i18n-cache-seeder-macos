@@ -405,7 +405,14 @@ def main():
     result=evaluate(target['webSocketDebuggerUrl'],expression,max(args.timeout,60))
     if not result.get('ok'):
         print('诊断信息：',json.dumps(result.get('diagnostics',{}),ensure_ascii=False))
-        raise RuntimeError(result.get('error','未找到可修改的 i18n Layer；如接受创建最小缓存可使用 --bootstrap-missing'))
+        error=result.get('error', '未找到可修改的 i18n Layer')
+        if not args.bootstrap_missing and result.get('cacheKeyCount') == 0:
+            error += ('\n未找到 Statsig 缓存。请先完全退出 Codex，然后可尝试：'
+                      'python3 /tmp/codex_i18n_macos.py --bootstrap-missing'
+                      '\n该选项会创建最小 i18n 缓存，其他功能使用缺失时的默认行为。')
+        elif args.bootstrap_missing and result.get('cacheKeyCount') == 0:
+            error += '\n未能创建最小缓存；请检查上述诊断信息。'
+        raise RuntimeError(error)
     print(f"完成：修改 {result.get('modified',0)} 项，原本已启用 {result.get('alreadyTrue',0)} 项。")
     if result.get('bootstrapCreated'): print('已创建最小 i18n 缓存。')
     print('请完全退出 Codex，再正常启动并检查中文界面。调试端口会随退出关闭。')
